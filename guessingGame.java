@@ -12,8 +12,8 @@ public class guessingGame {
     static String[] sevenLetterWords = new String[15];
     static final Scanner in = new Scanner(System.in);
 
-    private static void readFile(String fileName) {
-        try (BufferedReader in = new BufferedReader(new FileReader(fileName))){
+    private static void readFile() {
+        try (BufferedReader in = new BufferedReader(new FileReader("wordBank.txt"))){
             int counter1 = 0;
             int counter2 = 0;
             int counter3 = 0;
@@ -198,7 +198,7 @@ public class guessingGame {
     }
 
     public static void main(String[] args) {
-        readFile("wordBank");
+        readFile();
         System.out.println("\nWELCOME TO THE GUESSING GAME");
         while(round<5) {
             chooseTheRound();
