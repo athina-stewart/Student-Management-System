@@ -57,7 +57,15 @@ public class guessingGame {
         if (sixLetterWords[wordIndex] == null){
             return(get6LetterWord());
         }
-        return(sixLetterWords[wordIndex]);
+        String word = (sixLetterWords[wordIndex]);
+        String[] newArray = new String[sixLetterWords.length -1];
+        for (int index = 0; index < newArray.length; index++){
+            if (sixLetterWords[index] != null && !sixLetterWords[index].equals(word) ){
+                newArray[index] = sixLetterWords[index];
+            }
+        }
+        sixLetterWords = newArray;
+        return(word);
     }
 
     private static String get7LetterWord(){
@@ -66,7 +74,15 @@ public class guessingGame {
         if (sevenLetterWords[wordIndex] == null){
             return(get7LetterWord());
         }
-        return(sevenLetterWords[wordIndex]);
+        String word = (sevenLetterWords[wordIndex]);
+        String[] newArray = new String[sevenLetterWords.length -1];
+        for (int index = 0; index < newArray.length; index++){
+            if (sevenLetterWords[index] != null && !sevenLetterWords[index].equals(word) ){
+                newArray[index] = sevenLetterWords[index];
+            }
+        }
+        sevenLetterWords = newArray;
+        return(word);
     }
 
     private static void chooseTheRound(){
@@ -85,12 +101,11 @@ public class guessingGame {
         if (round == 3){
             System.out.println("PLAYER 1");
             word = get6LetterWord();
-            player1Score = player1Score + playTheGame(word);
+            player1Score = player1Score + (2* playTheGame(word));
 
             System.out.println("PLAYER 2");
             word = get6LetterWord();
-            player2Score = player2Score + playTheGame(word);
-            playTheGame(word);
+            player2Score = player2Score + (2 * playTheGame(word));
             round++;
             printTheScore();
 
@@ -98,11 +113,11 @@ public class guessingGame {
         if (round == 4){
             System.out.println("PLAYER 1");
             word = get7LetterWord();
-            player1Score = player1Score + playTheGame(word);
+            player1Score = player1Score + (3 * playTheGame(word));
 
             System.out.println("PLAYER 2");
             word = get7LetterWord();
-            player2Score = player2Score + playTheGame(word);
+            player2Score = player2Score + (3 * playTheGame(word));
             round++;
             printTheScore();
         }
@@ -113,7 +128,7 @@ public class guessingGame {
         while (count < 5){
             String playerGuess;
             printTheRound();
-            System.out.println(word);
+//            System.out.println(word);
             playerGuess = getGuess();
             char[] playerGuessAsCharacters = playerGuess.toCharArray();
             if (playerGuess.equals(word)){
@@ -121,15 +136,15 @@ public class guessingGame {
                 return 10;
             }
             for (int index= 0; index < playerGuessAsCharacters.length; index++){
-                int guessIndex = playerGuess.indexOf(word.charAt(index));
+                int guessIndex = word.indexOf(playerGuess.charAt(index));
                 if (playerGuess.charAt(index) == word.charAt(index)){
                     System.out.print("*");
                 }
-                else if ((guessIndex >= 0) &&
+                else if ((guessIndex > -1) &&
                         (playerGuess.charAt(index) != word.charAt(index))){
                     System.out.print("_");
                 }
-                if (guessIndex == -1){
+                else if (guessIndex == -1){
                     System.out.print("X");
                 }
             }
@@ -143,7 +158,15 @@ public class guessingGame {
     private static String getGuess(){
         System.out.println("Your guess: ");
         String guess = in.nextLine();
-        if (guess.length()!=5){
+        if (round < 3 && guess.length()!=5){
+            System.out.println("Your word is not the correct length");
+            return getGuess();
+        }
+        else if (round == 3 && guess.length()!=6){
+            System.out.println("Your word is not the correct length");
+            return getGuess();
+        }
+        else if (round == 4 && guess.length()!=7){
             System.out.println("Your word is not the correct length");
             return getGuess();
         }
@@ -152,7 +175,9 @@ public class guessingGame {
 
     private static void printTheRound(){
         System.out.println("\nTHIS IS ROUND " + (round+1) + "!");
-        System.out.println("Enter a 5 letter word.");
+        if ((round + 1) < 4){
+            System.out.println("Enter a 5 letter word.");
+        }
         if ((round + 1) == 4){
             System.out.println("\nDOUBLE POINTS!");
             System.out.println("Enter a 6 letter word.");
@@ -173,7 +198,7 @@ public class guessingGame {
     }
 
     public static void main(String[] args) {
-        readFile("/Users/Athina/IdeaProjects/PersonalProjects/src/wordBank.txt");
+        readFile("wordBank");
         System.out.println("\nWELCOME TO THE GUESSING GAME");
         while(round<5) {
             chooseTheRound();
