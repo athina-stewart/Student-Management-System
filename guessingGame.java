@@ -1,7 +1,9 @@
+import javax.sound.midi.Soundbank;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class guessingGame {
     static int player1Score;
@@ -10,6 +12,7 @@ public class guessingGame {
     static String[] fiveLetterWords = new String[15];
     static String[] sixLetterWords = new String[15];
     static String[] sevenLetterWords = new String[15];
+    static final Scanner in = new Scanner(System.in);
 
     private static void readFile(String fileName) {
         try (BufferedReader in = new BufferedReader(new FileReader(fileName))){
@@ -63,32 +66,74 @@ public class guessingGame {
         return(sevenLetterWords[wordIndex]);
     }
 
-    private static void playTheGame(){
-        while (round < 5){
-            printTheRound();
-            if (round < 3) {
-                String word = get5LetterWord();
-                System.out.println(word);
-                round++;
-            }
-            if (round == 3){
-                printTheRound();
-                round++;
-            }
-            if (round == 4){
-                printTheRound();
-                round++;
-            }
+    private static void chooseTheRound(){
+        if (round < 3) {
+            String word = get5LetterWord();
+            playTheGame(word);
+        }
+        if (round == 3){
+            String word = get6LetterWord();
+            playTheGame(word);
+        }
+        if (round == 4){
+            String word = get7LetterWord();
+            playTheGame(word);
         }
     }
 
+    private static void playTheGame(String word){
+        int count = 0;
+        while (count < 5){
+            String playerGuess;
+            printTheRound();
+            System.out.println(word);
+            playerGuess = getGuess();
+            char[] playerGuessAsCharacters = playerGuess.toCharArray();
+            if (playerGuess.equals(word)){
+                System.out.println("Congratulations! You guessed the word.");
+                round++;
+                return;
+            }
+            for (int index= 0; index < playerGuessAsCharacters.length; index++){
+                int guessIndex = playerGuess.indexOf(word.charAt(index));
+                if (playerGuess.charAt(index) == word.charAt(index)){
+                    System.out.print("*");
+                }
+                else if ((guessIndex >= 0) &&
+                        (playerGuess.charAt(index) != word.charAt(index))){
+                    System.out.print("_");
+                }
+                if (guessIndex == -1){
+                    System.out.print("X");
+                }
+            }
+            count++;
+            System.out.println("\nYou have " + (5-count) + " guesses remaining.");
+        }
+        System.out.println("You did not guess the word.");
+        round++;
+    }
+
+    private static String getGuess(){
+        System.out.println("Your guess: ");
+        String guess = in.nextLine();
+        if (guess.length()!=5){
+            System.out.println("Your word is not the correct length");
+            return getGuess();
+        }
+        return guess;
+    }
+
     private static void printTheRound(){
-        System.out.println("THIS IS ROUND " + (round+1) + " !\n");
+        System.out.println("\nTHIS IS ROUND " + (round+1) + "!");
+        System.out.println("Enter a 5 letter word.");
         if ((round + 1) == 4){
-            System.out.println("DOUBLE POINTS!\n");
+            System.out.println("\nDOUBLE POINTS!");
+            System.out.println("Enter a 6 letter word.");
         }
         if ((round + 1) == 5){
-            System.out.println("TRIPLE POINTS!\n");
+            System.out.println("\nTRIPLE POINTS!");
+            System.out.println("Enter a 7 letter word.");
         }
     }
 
@@ -98,6 +143,8 @@ public class guessingGame {
 
     public static void main(String[] args) {
         readFile("/Users/Athina/IdeaProjects/PersonalProjects/src/wordBank.txt");
-        playTheGame();
+        while(round<5) {
+            chooseTheRound();
+        }
     }
 }
