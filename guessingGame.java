@@ -1,8 +1,6 @@
-import javax.sound.midi.Soundbank;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class guessingGame {
@@ -31,9 +29,6 @@ public class guessingGame {
                     sevenLetterWords[counter3++] = word;
                 }
             }
-            System.out.println(Arrays.toString(fiveLetterWords));
-            System.out.println(Arrays.toString(sixLetterWords));
-            System.out.println(Arrays.toString(sevenLetterWords));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -45,7 +40,15 @@ public class guessingGame {
         if (fiveLetterWords[wordIndex] == null){
             return(get5LetterWord());
         }
-        return(fiveLetterWords[wordIndex]);
+        String word = (fiveLetterWords[wordIndex]);
+        String[] newArray = new String[fiveLetterWords.length -1];
+        for (int index = 0; index < newArray.length; index++){
+            if (fiveLetterWords[index] != null && !fiveLetterWords[index].equals(word) ){
+                newArray[index] = fiveLetterWords[index];
+            }
+        }
+        fiveLetterWords = newArray;
+        return(word);
     }
 
     private static String get6LetterWord(){
@@ -67,21 +70,45 @@ public class guessingGame {
     }
 
     private static void chooseTheRound(){
+        String word;
         if (round < 3) {
-            String word = get5LetterWord();
-            playTheGame(word);
+            System.out.println("\n\nPLAYER 1");
+            word = get5LetterWord();
+            player1Score = player1Score + playTheGame(word);
+
+            System.out.println("\n\nPLAYER 2");
+            word = get5LetterWord();
+            player2Score = player2Score + playTheGame(word);
+            round++;
+            printTheScore();
         }
         if (round == 3){
-            String word = get6LetterWord();
+            System.out.println("PLAYER 1");
+            word = get6LetterWord();
+            player1Score = player1Score + playTheGame(word);
+
+            System.out.println("PLAYER 2");
+            word = get6LetterWord();
+            player2Score = player2Score + playTheGame(word);
             playTheGame(word);
+            round++;
+            printTheScore();
+
         }
         if (round == 4){
-            String word = get7LetterWord();
-            playTheGame(word);
+            System.out.println("PLAYER 1");
+            word = get7LetterWord();
+            player1Score = player1Score + playTheGame(word);
+
+            System.out.println("PLAYER 2");
+            word = get7LetterWord();
+            player2Score = player2Score + playTheGame(word);
+            round++;
+            printTheScore();
         }
     }
 
-    private static void playTheGame(String word){
+    private static int playTheGame(String word){
         int count = 0;
         while (count < 5){
             String playerGuess;
@@ -91,8 +118,7 @@ public class guessingGame {
             char[] playerGuessAsCharacters = playerGuess.toCharArray();
             if (playerGuess.equals(word)){
                 System.out.println("Congratulations! You guessed the word.");
-                round++;
-                return;
+                return 10;
             }
             for (int index= 0; index < playerGuessAsCharacters.length; index++){
                 int guessIndex = playerGuess.indexOf(word.charAt(index));
@@ -111,7 +137,7 @@ public class guessingGame {
             System.out.println("\nYou have " + (5-count) + " guesses remaining.");
         }
         System.out.println("You did not guess the word.");
-        round++;
+        return 0;
     }
 
     private static String getGuess(){
@@ -138,13 +164,20 @@ public class guessingGame {
     }
 
     private static void printTheScore(){
-
+        System.out.println("\n\n---------------------");
+        System.out.println("Player 1 Score: " + player1Score);
+        System.out.println("                                ");
+        System.out.println("                                ");
+        System.out.println("Player 2 Score: " + player2Score);
+        System.out.println("---------------------");
     }
 
     public static void main(String[] args) {
         readFile("/Users/Athina/IdeaProjects/PersonalProjects/src/wordBank.txt");
+        System.out.println("\nWELCOME TO THE GUESSING GAME");
         while(round<5) {
             chooseTheRound();
         }
+        System.out.println("GAME OVER");
     }
 }
