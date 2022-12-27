@@ -4,8 +4,8 @@ public class StudentRecord {
     private int grade;
     private int schoolID;
     private String emergencyContactName;
-    private String emergencyContactNumber;
-    private String[] allergies;
+    private int emergencyContactNumber;
+    private String[] allergies = new String[20];
 
     public StudentRecord(){}
 
@@ -13,6 +13,9 @@ public class StudentRecord {
         this.name = name;
         this.grade = grade;
         this.schoolID = schoolID;
+        this.emergencyContactNumber = 0;
+        this.emergencyContactName = null;
+        this.allergies[0] = "null";
     }
 
     public String getName() {
@@ -37,5 +40,29 @@ public class StudentRecord {
 
     public void setSchoolID(int schoolID) {
         this.schoolID = schoolID;
+    }
+
+    public String getEmergencyContactName() {
+        return emergencyContactName;
+    }
+
+    public void setEmergencyContactName(String emergencyContactName) {
+        this.emergencyContactName = emergencyContactName;
+    }
+
+    public int getEmergencyContactNumber() {
+        return emergencyContactNumber;
+    }
+
+    public void setEmergencyContactNumber(int emergencyContactNumber) {
+        this.emergencyContactNumber = emergencyContactNumber;
+    }
+
+    public String[] getAllergies() {
+        return allergies;
+    }
+
+    public void setAllergies(String[] allergies) {
+        this.allergies = allergies;
     }
 }
