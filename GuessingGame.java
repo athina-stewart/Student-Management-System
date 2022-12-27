@@ -3,7 +3,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class guessingGame {
+public class GuessingGame {
     static int player1Score;
     static int player2Score;
     static int round = 0;
@@ -13,7 +13,7 @@ public class guessingGame {
     static final Scanner in = new Scanner(System.in);
 
     private static void readFile() {
-        try (BufferedReader in = new BufferedReader(new FileReader("wordBank.txt"))){
+        try (BufferedReader in = new BufferedReader(new FileReader("WordBank.txt"))){
             int counter1 = 0;
             int counter2 = 0;
             int counter3 = 0;
