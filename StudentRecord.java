@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class StudentRecord {
 
     private String name;
@@ -64,5 +66,12 @@ public class StudentRecord {
 
     public void setAllergies(String[] allergies) {
         this.allergies = allergies;
+    }
+
+    public String toString(){
+        return("Record: Name[ " + name + " ], ID[ " + schoolID +" ], Grade[ "
+                + grade + " ], Allergies[ " + Arrays.toString(allergies) + " ]," +
+                " Contact Name[ " + emergencyContactName + " ], Contact Number" +
+                "[ " + emergencyContactNumber + " ]");
     }
 }

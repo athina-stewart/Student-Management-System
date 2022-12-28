@@ -3,6 +3,7 @@
  * **/
 
 import java.util.LinkedList;
+import java.util.Scanner;
 
 public class StudentManagementSystem {
     LinkedList<StudentRecord> studentList;
@@ -10,6 +11,8 @@ public class StudentManagementSystem {
     public StudentManagementSystem(){
         studentList = new LinkedList<>();
     }
+
+    Scanner in = new Scanner(System.in);
 
     public boolean find(int studentID){
         for (StudentRecord studentRecord : studentList) {
@@ -36,7 +39,46 @@ public class StudentManagementSystem {
     }
 
     public void delete(int studentID){
+        if (!find(studentID)){
+            System.out.println("No deletion. Student not found in management system.");
+        } else {
+            studentList.removeIf(record -> studentID == record.getSchoolID());
+//            for (StudentRecord record: studentList){
+//                if (studentID == record.getSchoolID()){
+//                    studentList.remove(record);
+//                }
+//            }
+        }
+    }
 
+    private StudentRecord findRecord(int studentID){
+        for (StudentRecord studentRecord : studentList) {
+            if (studentID == studentRecord.getSchoolID()) {
+                return studentRecord;
+            }
+        }
+        return null;
+    }
+
+    public void update(int studentID){
+        if (!find(studentID)){
+            System.out.println("Student is not found in management system.");
+        } else {
+            System.out.println("New ID number: ");
+            findRecord(studentID).setSchoolID(in.nextInt());
+
+            System.out.println("New grade: ");
+            findRecord(studentID).setGrade(in.nextInt());
+
+            System.out.println("New allergies: ");
+            findRecord(studentID).setAllergies(new String[]{in.nextLine()});
+
+            System.out.println("New Emergency Contact Name: ");
+            findRecord(studentID).setEmergencyContactName(in.nextLine());
+
+            System.out.println("New Emergency Contact Number: ");
+            findRecord(studentID).setEmergencyContactNumber(in.nextInt());
+        }
     }
 
 }
