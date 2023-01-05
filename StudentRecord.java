@@ -7,7 +7,7 @@ public class StudentRecord {
     private int schoolID;
     private String emergencyContactName;
     private int emergencyContactNumber;
-    private String[] allergies = new String[20];
+    private String[] allergies = new String[3];
 
     public StudentRecord(){}
 

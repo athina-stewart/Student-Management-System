@@ -1,84 +1,60 @@
-/**
- * Available commands: add, delete, update, find, exit
- * **/
-
-import java.util.LinkedList;
 import java.util.Scanner;
 
 public class StudentManagementSystem {
-    LinkedList<StudentRecord> studentList;
+    public static void main(String[] args) {
 
-    public StudentManagementSystem(){
-        studentList = new LinkedList<>();
-    }
+        ManagementSystem college = new ManagementSystem();
+        Scanner in = new Scanner(System.in);
 
-    Scanner in = new Scanner(System.in);
+        int option = 0;
+        while (option !=7) {
 
-    public boolean find(int studentID){
-        for (StudentRecord studentRecord : studentList) {
-            if (studentID == studentRecord.getSchoolID()) {
-                return true;
+            System.out.println("\nStudent Management System");
+            System.out.println("1. Add student");
+            System.out.println("2. Delete student");
+            System.out.println("3. Update student");
+            System.out.println("4. Show all students");
+            System.out.println("5. Find student");
+            System.out.println("6. Show student");
+            System.out.println("7. Exit management system");
+            System.out.print("Enter option: ");
+            option = in.nextInt();
+
+            if(option == 1){
+                System.out.println("Student Name: ");
+                String name = in.nextLine();
+                System.out.println("Student ID: ");
+                int ID = in.nextInt();
+                System.out.println("Student grade: ");
+                int grade = in.nextInt();
+
+                StudentRecord record = new StudentRecord(name, grade, ID);
+                System.out.println(record);
+                college.add(record);
+            }
+            if(option == 2){
+                System.out.println("Student ID: ");
+                int ID = in.nextInt();
+                college.delete(ID);
+            }
+            if(option == 3){
+                System.out.println("Student ID: ");
+                int ID = in.nextInt();
+                college.update(ID);
+            }
+            if(option == 4){
+                college.show();
+            }
+            if(option == 5){
+                System.out.println("Student ID: ");
+                int ID = in.nextInt();
+                college.find(ID);
+            }
+            if(option == 5){
+                System.out.println("Student ID: ");
+                int ID = in.nextInt();
+                college.showStudent(ID);
             }
         }
-        return false;
-//        for (int index = 0; index < studentList.size(); index ++){
-//            if (studentID == studentList.get(index).getSchoolID()){
-//                return true;
-//            }
-//        }
-//        return false;
     }
-
-    public void add(StudentRecord record){
-        if (find(record.getSchoolID())){
-            System.out.println("Student is already recorded");
-        } else {
-            studentList.add(record);
-            System.out.println("Student has been added to management system");
-        }
-    }
-
-    public void delete(int studentID){
-        if (!find(studentID)){
-            System.out.println("No deletion. Student not found in management system.");
-        } else {
-            studentList.removeIf(record -> studentID == record.getSchoolID());
-//            for (StudentRecord record: studentList){
-//                if (studentID == record.getSchoolID()){
-//                    studentList.remove(record);
-//                }
-//            }
-        }
-    }
-
-    private StudentRecord findRecord(int studentID){
-        for (StudentRecord studentRecord : studentList) {
-            if (studentID == studentRecord.getSchoolID()) {
-                return studentRecord;
-            }
-        }
-        return null;
-    }
-
-    public void update(int studentID){
-        if (!find(studentID)){
-            System.out.println("Student is not found in management system.");
-        } else {
-            System.out.println("New ID number: ");
-            findRecord(studentID).setSchoolID(in.nextInt());
-
-            System.out.println("New grade: ");
-            findRecord(studentID).setGrade(in.nextInt());
-
-            System.out.println("New allergies: ");
-            findRecord(studentID).setAllergies(new String[]{in.nextLine()});
-
-            System.out.println("New Emergency Contact Name: ");
-            findRecord(studentID).setEmergencyContactName(in.nextLine());
-
-            System.out.println("New Emergency Contact Number: ");
-            findRecord(studentID).setEmergencyContactNumber(in.nextInt());
-        }
-    }
-
 }
